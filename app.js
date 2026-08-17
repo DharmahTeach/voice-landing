@@ -1,11 +1,11 @@
 /**
  * 🎙️ Изменение Голоса | Voice Changer — Interactive JavaScript
- * Web Audio API Acoustic Synthesizer & Demo Player, Waveform Visualizer & UI Logic
+ * Real Audio Player (19 converted presets), Web Audio API FFT Waveform Visualizer & UI Logic
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initHamburgerMenu();
-  initAudioPlayer();
+  initRealAudioPlayer();
   initCategoryFilters();
   initComparisonToggle();
   initFaqAccordion();
@@ -14,45 +14,49 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// 1. Web Audio API Acoustic Synthesizer & Demo Player
+// 1. Real Audio Player & Web Audio API Analyzer
 // ==========================================================================
-let audioCtx = null;
-let currentOscillator = null;
-let currentGain = null;
+let currentAudio = null;
 let currentPlayingPresetId = null;
+let audioCtx = null;
+let analyserNode = null;
+let audioSourceNode = null;
 let isVisualizerActive = false;
 
-const PRESET_AUDIO_DATA = {
-  // Female Voices
-  girl_alisa: { freq: 215, type: 'sine', modFreq: 5, modGain: 15, filterFreq: 3200, duration: 2.2, label: 'Алиса' },
-  girl_mia: { freq: 235, type: 'triangle', modFreq: 6, modGain: 18, filterFreq: 3800, duration: 2.0, label: 'Мия' },
-  girl_victoria: { freq: 185, type: 'sine', modFreq: 4.5, modGain: 12, filterFreq: 2400, duration: 2.3, label: 'Виктория' },
-  girl_kira: { freq: 210, type: 'sine', modFreq: 5.5, modGain: 16, filterFreq: 2800, duration: 2.1, label: 'Кира' },
-  girl_eva: { freq: 200, type: 'sine', modFreq: 4, modGain: 10, filterFreq: 3400, echo: true, duration: 2.4, label: 'Ева' },
+// Map of all 18 voice presets + original
+const AUDIO_PATHS = {
+  // Female
+  girl_alisa: 'assets/audio/girl_alisa.mp3',
+  girl_mia: 'assets/audio/girl_mia.mp3',
+  girl_victoria: 'assets/audio/girl_victoria.mp3',
+  girl_kira: 'assets/audio/girl_kira.mp3',
+  girl_eva: 'assets/audio/girl_eva.mp3',
 
-  // Male Voices
-  man_maxim: { freq: 115, type: 'sawtooth', modFreq: 4, modGain: 8, filterFreq: 1800, duration: 2.2, label: 'Максим' },
-  man_artem: { freq: 88, type: 'sawtooth', modFreq: 3.5, modGain: 6, filterFreq: 1200, duration: 2.4, label: 'Артём' },
-  man_dmitry: { freq: 138, type: 'sawtooth', modFreq: 5, modGain: 10, filterFreq: 2200, duration: 2.0, label: 'Дмитрий' },
-  man_mark: { freq: 106, type: 'sine', modFreq: 3.8, modGain: 7, filterFreq: 1600, duration: 2.3, label: 'Марк' },
-  man_viktor: { freq: 78, type: 'sawtooth', modFreq: 3.0, modGain: 5, filterFreq: 950, duration: 2.5, label: 'Виктор' },
+  // Male
+  man_maxim: 'assets/audio/man_maxim.mp3',
+  man_artem: 'assets/audio/man_artem.mp3',
+  man_dmitry: 'assets/audio/man_dmitry.mp3',
+  man_mark: 'assets/audio/man_mark.mp3',
+  man_viktor: 'assets/audio/man_viktor.mp3',
 
   // Original & Effects
-  original: { freq: 125, type: 'sawtooth', modFreq: 4.2, modGain: 8, filterFreq: 2000, duration: 2.2, label: 'Оригинал' },
-  child: { freq: 290, type: 'sine', modFreq: 7, modGain: 20, filterFreq: 4500, duration: 1.8, label: 'Ребёнок' },
-  chipmunk: { freq: 380, type: 'triangle', modFreq: 8, modGain: 25, filterFreq: 5000, duration: 1.7, label: 'Бурундук' },
-  robot: { freq: 100, type: 'square', modFreq: 25, modGain: 40, filterFreq: 1500, duration: 2.2, label: 'Робот' },
-  monster: { freq: 58, type: 'sawtooth', modFreq: 15, modGain: 20, filterFreq: 600, echo: true, duration: 2.5, label: 'Монстр' },
-  radio: { freq: 130, type: 'sawtooth', modFreq: 4, modGain: 8, filterFreq: 1800, isRadio: true, duration: 2.1, label: 'Рация' },
-  alien: { freq: 160, type: 'sine', modFreq: 12, modGain: 35, filterFreq: 2500, duration: 2.3, label: 'Пришелец' },
-  speed: { freq: 130, type: 'sawtooth', modFreq: 6.5, modGain: 10, filterFreq: 2400, duration: 1.4, label: 'Ускорение' },
-  slowed_reverb: { freq: 105, type: 'sawtooth', modFreq: 3, modGain: 6, filterFreq: 1400, echo: true, duration: 2.8, label: 'Slowed' }
+  original: 'assets/audio/original.mp3',
+  child: 'assets/audio/child.mp3',
+  chipmunk: 'assets/audio/chipmunk.mp3',
+  robot: 'assets/audio/robot.mp3',
+  monster: 'assets/audio/monster.mp3',
+  radio: 'assets/audio/radio.mp3',
+  alien: 'assets/audio/alien.mp3',
+  speed: 'assets/audio/speed.mp3',
+  slowed_reverb: 'assets/audio/slowed_reverb.mp3',
 };
 
 function getAudioContext() {
   if (!audioCtx) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AudioContext();
+    analyserNode = audioCtx.createAnalyser();
+    analyserNode.fftSize = 64;
   }
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();
@@ -61,29 +65,23 @@ function getAudioContext() {
 }
 
 function stopCurrentAudio() {
-  if (currentOscillator) {
-    try {
-      currentOscillator.stop();
-      currentOscillator.disconnect();
-    } catch (e) {}
-    currentOscillator = null;
-  }
-  if (currentGain) {
-    try {
-      currentGain.disconnect();
-    } catch (e) {}
-    currentGain = null;
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
   }
   document.querySelectorAll('.preset-card').forEach(card => card.classList.remove('is-playing'));
+  document.querySelectorAll('.toggle-switch-btn').forEach(btn => btn.classList.remove('is-playing'));
   currentPlayingPresetId = null;
   isVisualizerActive = false;
 }
 
 function playPresetSound(presetId) {
-  const data = PRESET_AUDIO_DATA[presetId] || PRESET_AUDIO_DATA.girl_alisa;
-  const ctx = getAudioContext();
+  const audioSrc = AUDIO_PATHS[presetId];
+  if (!audioSrc) return;
 
-  if (currentPlayingPresetId === presetId) {
+  // Toggle if clicked again
+  if (currentPlayingPresetId === presetId && currentAudio && !currentAudio.paused) {
     stopCurrentAudio();
     return;
   }
@@ -92,75 +90,48 @@ function playPresetSound(presetId) {
   currentPlayingPresetId = presetId;
   isVisualizerActive = true;
 
+  // UI Active state
   const card = document.querySelector(`.preset-card[data-preset="${presetId}"]`);
   if (card) card.classList.add('is-playing');
 
-  // Master Gain
-  const now = ctx.currentTime;
-  const masterGain = ctx.createGain();
-  masterGain.gain.setValueAtTime(0.001, now);
-  masterGain.gain.exponentialRampToValueAtTime(0.35, now + 0.08);
+  const toggleBtn = document.querySelector(`.toggle-switch-btn[data-target="${presetId}"]`);
+  if (toggleBtn) toggleBtn.classList.add('is-playing');
 
-  // Main Vocal Oscillator
-  const osc = ctx.createOscillator();
-  osc.type = data.type;
-  osc.frequency.setValueAtTime(data.freq, now);
+  // Create new HTML5 Audio
+  const audio = new Audio(audioSrc);
+  currentAudio = audio;
 
-  // Pitch envelope (intonation arc)
-  osc.frequency.exponentialRampToValueAtTime(data.freq * 1.08, now + data.duration * 0.4);
-  osc.frequency.exponentialRampToValueAtTime(data.freq * 0.92, now + data.duration * 0.9);
-
-  // Vibrato / Pitch Modulation
-  const vibrato = ctx.createOscillator();
-  const vibratoGain = ctx.createGain();
-  vibrato.frequency.setValueAtTime(data.modFreq, now);
-  vibratoGain.gain.setValueAtTime(data.modGain, now);
-  vibrato.connect(osc.frequency);
-  vibrato.start(now);
-
-  // Formant Filter
-  const filter = ctx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.setValueAtTime(data.filterFreq, now);
-  filter.Q.setValueAtTime(3.5, now);
-
-  // Connect chain
-  osc.connect(filter);
-  filter.connect(masterGain);
-
-  // Delay / Echo effect
-  if (data.echo) {
-    const delay = ctx.createDelay();
-    delay.delayTime.value = 0.18;
-    const feedback = ctx.createGain();
-    feedback.gain.value = 0.35;
-    filter.connect(delay);
-    delay.connect(feedback);
-    feedback.connect(delay);
-    delay.connect(masterGain);
+  // Hook into Web Audio Analyser for live frequency spectrum
+  try {
+    const ctx = getAudioContext();
+    if (ctx) {
+      // Connect to analyser node (safe cross-browser)
+      const source = ctx.createMediaElementSource(audio);
+      source.connect(analyserNode);
+      analyserNode.connect(ctx.destination);
+    }
+  } catch (e) {
+    // If MediaElementSource already connected or CORS, fallback gracefully
   }
 
-  masterGain.connect(ctx.destination);
+  audio.play().then(() => {
+    isVisualizerActive = true;
+  }).catch(err => {
+    console.warn("Audio playback error:", err);
+  });
 
-  // Envelope decay
-  masterGain.gain.setValueAtTime(0.35, now + data.duration - 0.2);
-  masterGain.gain.exponentialRampToValueAtTime(0.0001, now + data.duration);
-
-  osc.start(now);
-  osc.stop(now + data.duration);
-  vibrato.stop(now + data.duration);
-
-  currentOscillator = osc;
-  currentGain = masterGain;
-
-  osc.onended = () => {
+  audio.onended = () => {
     if (currentPlayingPresetId === presetId) {
       stopCurrentAudio();
     }
   };
+
+  audio.onerror = () => {
+    stopCurrentAudio();
+  };
 }
 
-function initAudioPlayer() {
+function initRealAudioPlayer() {
   document.querySelectorAll('.preset-card').forEach(card => {
     card.addEventListener('click', () => {
       const presetId = card.getAttribute('data-preset');
@@ -215,7 +186,7 @@ function initComparisonToggle() {
 }
 
 // ==========================================================================
-// 4. Live Canvas Waveform Visualizer
+// 4. Live Canvas Waveform FFT Visualizer
 // ==========================================================================
 function initWaveformVisualizer() {
   const canvas = document.getElementById('waveformCanvas');
@@ -230,6 +201,7 @@ function initWaveformVisualizer() {
   window.addEventListener('resize', resizeCanvas);
 
   let phase = 0;
+  const dataArray = new Uint8Array(32);
 
   function renderWave() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -238,16 +210,35 @@ function initWaveformVisualizer() {
     const centerY = height / 2;
 
     const barCount = Math.floor(width / 6);
-    const amp = isVisualizerActive ? 32 : 6;
+    let realFreqSum = 0;
+
+    if (analyserNode && isVisualizerActive) {
+      try {
+        analyserNode.getByteFrequencyData(dataArray);
+        for (let j = 0; j < dataArray.length; j++) {
+          realFreqSum += dataArray[j];
+        }
+      } catch (e) {}
+    }
+
+    const freqBoost = realFreqSum > 0 ? (realFreqSum / dataArray.length) / 5 : (isVisualizerActive ? 25 : 4);
 
     for (let i = 0; i < barCount; i++) {
       const x = i * 6;
       const progress = i / barCount;
-      const wave = Math.sin(progress * Math.PI * 4 + phase) * Math.cos(progress * Math.PI * 2);
-      const barHeight = Math.max(4, Math.abs(wave) * amp + (isVisualizerActive ? Math.random() * 8 : 2));
+      
+      let barHeight;
+      if (isVisualizerActive && realFreqSum > 0) {
+        const freqIndex = Math.floor((i / barCount) * (dataArray.length - 1));
+        const val = dataArray[freqIndex] || 20;
+        barHeight = Math.max(5, (val / 255) * (height * 0.85));
+      } else {
+        const wave = Math.sin(progress * Math.PI * 4 + phase) * Math.cos(progress * Math.PI * 2);
+        barHeight = Math.max(4, Math.abs(wave) * freqBoost + (isVisualizerActive ? Math.random() * 6 : 2));
+      }
 
       // Gradient color (Cyan to Magenta)
-      const grad = ctx.createLinearGradient(0, centerY - barHeight, 0, centerY + barHeight);
+      const grad = ctx.createLinearGradient(0, centerY - barHeight / 2, 0, centerY + barHeight / 2);
       grad.addColorStop(0, '#00d2ff');
       grad.addColorStop(0.5, '#7928ca');
       grad.addColorStop(1, '#ff007a');
@@ -346,4 +337,3 @@ function initHamburgerMenu() {
     }
   });
 }
-
