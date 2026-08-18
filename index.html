@@ -27,8 +27,13 @@
   <meta name="twitter:image" content="assets/logo.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/favicon/android-chrome-192x192.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <meta name="theme-color" content="#07080d">
 
   <!-- Google Fonts: Outfit & Inter for high-end typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -178,7 +183,7 @@
           Превращайте мужской голос в <strong>естественный женский тембр</strong> (Алиса, Ева, Виктория), глубокий брутальный бас или голос персонажей. Без мультяшности и без эффекта бурундука.
         </p>
 
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; width: 100%;">
+        <div class="hero-actions">
           <a href="https://t.me/VoicePresetBot?start=landing" class="btn btn-primary btn-large" target="_blank" rel="noopener noreferrer">
             <span>🎤 Попробовать 20 голосовых бесплатно</span>
             <span class="btn-icon-right">
@@ -656,7 +661,7 @@
 
         <div class="visualizer-canvas-box">
           <canvas id="waveformCanvas"></canvas>
-          <span style="font-size: 0.85rem; color: var(--text-muted);">
+          <span class="visualizer-caption">
             Живая визуализация частотного спектра речи (FFT Waveform)
           </span>
         </div>
@@ -1074,7 +1079,7 @@
     <div class="container">
       <div class="footer-top">
         <a href="https://t.me/VoicePresetBot?start=landing" class="logo-brand">
-          <img src="assets/logo.png" alt="Логотип" class="logo-img" style="width: 36px; height: 36px;">
+          <img src="assets/logo.png" alt="Логотип" class="logo-img logo-img-sm">
           <span class="brand-title gradient-text">ИЗМЕНЕНИЕ ГОЛОСА</span>
         </a>
 
@@ -1097,15 +1102,15 @@
   </footer>
 
   <!-- Sticky Mobile CTA Bar -->
-  <div class="sticky-mobile-cta">
-    <div style="display: flex; align-items: center; gap: 0.6rem;">
-      <img src="assets/logo.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%;">
+  <div class="sticky-mobile-cta" hidden>
+    <div class="sticky-mobile-cta-info">
+      <img src="assets/logo.png" alt="Logo" class="sticky-mobile-cta-logo">
       <div>
-        <div style="font-size: 0.85rem; font-weight: 700; color: #fff;">Изменение Голоса</div>
-        <div style="font-size: 0.72rem; color: var(--neon-cyan);">🎁 20 генераций бесплатно</div>
+        <div class="sticky-mobile-cta-title">Изменение Голоса</div>
+        <div class="sticky-mobile-cta-subtitle">🎁 20 генераций бесплатно</div>
       </div>
     </div>
-    <a href="https://t.me/VoicePresetBot?start=landing" class="btn btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.88rem;" target="_blank" rel="noopener noreferrer">
+    <a href="https://t.me/VoicePresetBot?start=landing" class="btn btn-primary sticky-mobile-cta-btn" target="_blank" rel="noopener noreferrer">
       <span>Запустить 🚀</span>
     </a>
   </div>

@@ -284,17 +284,31 @@ function initFaqAccordion() {
 // ==========================================================================
 // 6. Sticky Mobile CTA Bar
 // ==========================================================================
+function setMenuOpen(isOpen) {
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const siteNav = document.getElementById('siteNav');
+  if (!hamburgerBtn || !siteNav) return;
+
+  siteNav.classList.toggle('is-open', isOpen);
+  hamburgerBtn.classList.toggle('is-active', isOpen);
+  hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  document.body.classList.toggle('menu-open', isOpen);
+}
+
 function initStickyMobileCta() {
   const stickyBar = document.querySelector('.sticky-mobile-cta');
   if (!stickyBar) return;
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 400 && window.innerWidth <= 768) {
-      stickyBar.style.display = 'flex';
-    } else {
-      stickyBar.style.display = 'none';
-    }
-  });
+  const updateStickyBar = () => {
+    const shouldShow = window.scrollY > 400 && window.innerWidth <= 768;
+    stickyBar.classList.toggle('is-visible', shouldShow);
+    stickyBar.hidden = !shouldShow;
+    document.body.classList.toggle('has-sticky-cta', shouldShow);
+  };
+
+  updateStickyBar();
+  window.addEventListener('scroll', updateStickyBar, { passive: true });
+  window.addEventListener('resize', updateStickyBar);
 }
 
 // ==========================================================================
@@ -307,33 +321,26 @@ function initHamburgerMenu() {
 
   hamburgerBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isOpen = siteNav.classList.contains('is-open');
-    if (isOpen) {
-      siteNav.classList.remove('is-open');
-      hamburgerBtn.classList.remove('is-active');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
-    } else {
-      siteNav.classList.add('is-open');
-      hamburgerBtn.classList.add('is-active');
-      hamburgerBtn.setAttribute('aria-expanded', 'true');
-    }
+    setMenuOpen(!siteNav.classList.contains('is-open'));
   });
 
   // Close when clicking any nav link
   siteNav.querySelectorAll('.nav-link, .mobile-nav-cta a').forEach(link => {
     link.addEventListener('click', () => {
-      siteNav.classList.remove('is-open');
-      hamburgerBtn.classList.remove('is-active');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      setMenuOpen(false);
     });
   });
 
   // Close when clicking outside
   document.addEventListener('click', (e) => {
     if (!siteNav.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-      siteNav.classList.remove('is-open');
-      hamburgerBtn.classList.remove('is-active');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      setMenuOpen(false);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1120) {
+      setMenuOpen(false);
     }
   });
 }
