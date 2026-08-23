@@ -1503,6 +1503,109 @@ a.btn, a.btn:hover, a.btn:visited, a.btn:active, a.btn span {
   .safety-card {
     padding: 1.5rem;
   }
+/* ==========================================================================
+   Ecosystem Partner Block (Body Metrics)
+   ========================================================================== */
+.partner-bot-section {
+  padding: 40px 0 20px 0;
+}
+
+.partner-bot-card {
+  background: linear-gradient(135deg, rgba(20, 25, 45, 0.7) 0%, rgba(13, 16, 28, 0.85) 100%);
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 25px rgba(0, 210, 255, 0.08);
+  transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.partner-bot-card:hover {
+  border-color: rgba(0, 210, 255, 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45), var(--glow-cyan);
+  transform: translateY(-2px);
+}
+
+.partner-bot-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.partner-bot-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.partner-bot-desc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 720px;
+}
+
+.partner-bot-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.partner-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  color: var(--silver-mid);
+}
+
+.partner-bot-action {
+  flex-shrink: 0;
+}
+
+.partner-bot-btn {
+  white-space: nowrap;
+  padding: 0.9rem 1.6rem;
+  font-size: 0.95rem;
+  border: 1px solid rgba(0, 210, 255, 0.4);
+  background: rgba(0, 210, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.partner-bot-btn:hover {
+  background: var(--grad-cyan);
+  color: #07080d;
+  font-weight: 700;
+  box-shadow: var(--glow-cyan);
+}
+
+@media (max-width: 900px) {
+  .partner-bot-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.8rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .partner-bot-action {
+    width: 100%;
+  }
+
+  .partner-bot-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ==========================================================================
