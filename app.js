@@ -143,31 +143,90 @@ function initRealAudioPlayer() {
 }
 
 // ==========================================================================
-// 2. Category Filtering Tabs
+// 2. Category Filtering & Collapsible Showcase
 // ==========================================================================
+let isVoicesExpanded = false;
+const INITIAL_VISIBLE_COUNT = 6;
+
+function updateVoiceCardsVisibility() {
+  const activeTab = document.querySelector('.tab-btn.active');
+  const filter = activeTab ? activeTab.getAttribute('data-filter') : 'all';
+  const cards = document.querySelectorAll('.preset-card');
+  const expandWrapper = document.getElementById('voicesExpandWrapper');
+  const fadeOverlay = document.getElementById('voicesGridFade');
+  const toggleBtn = document.getElementById('toggleVoicesBtn');
+
+  let matchIndex = 0;
+
+  cards.forEach(card => {
+    const category = card.getAttribute('data-category');
+    const matchesFilter = (filter === 'all' || category === filter);
+
+    if (!matchesFilter) {
+      card.style.display = 'none';
+      card.style.opacity = '0';
+    } else {
+      if (filter === 'all' && !isVoicesExpanded && matchIndex >= INITIAL_VISIBLE_COUNT) {
+        card.style.display = 'none';
+        card.style.opacity = '0';
+      } else {
+        card.style.display = 'flex';
+        card.style.opacity = '1';
+      }
+      matchIndex++;
+    }
+  });
+
+  if (expandWrapper && toggleBtn) {
+    if (filter === 'all') {
+      expandWrapper.style.display = 'flex';
+      if (fadeOverlay) {
+        fadeOverlay.style.display = isVoicesExpanded ? 'none' : 'block';
+      }
+      const btnText = toggleBtn.querySelector('.expand-btn-text');
+      const btnIcon = toggleBtn.querySelector('.expand-btn-icon');
+      if (isVoicesExpanded) {
+        if (btnText) btnText.textContent = 'Свернуть каталог';
+        if (btnIcon) btnIcon.style.transform = 'rotate(180deg)';
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        if (btnText) btnText.textContent = '🎧 Показать все 18 голосов и эффектов';
+        if (btnIcon) btnIcon.style.transform = 'rotate(0deg)';
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    } else {
+      expandWrapper.style.display = 'none';
+      if (fadeOverlay) fadeOverlay.style.display = 'none';
+    }
+  }
+}
+
 function initCategoryFilters() {
   const tabs = document.querySelectorAll('.tab-btn');
-  const cards = document.querySelectorAll('.preset-card');
+  const toggleBtn = document.getElementById('toggleVoicesBtn');
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-
-      const filter = tab.getAttribute('data-filter');
-
-      cards.forEach(card => {
-        const category = card.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          card.style.display = 'flex';
-          card.style.opacity = '1';
-        } else {
-          card.style.display = 'none';
-          card.style.opacity = '0';
-        }
-      });
+      updateVoiceCardsVisibility();
     });
   });
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      isVoicesExpanded = !isVoicesExpanded;
+      updateVoiceCardsVisibility();
+      if (!isVoicesExpanded) {
+        const voicesSection = document.getElementById('voices');
+        if (voicesSection) {
+          voicesSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  }
+
+  updateVoiceCardsVisibility();
 }
 
 // ==========================================================================

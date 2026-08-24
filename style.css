@@ -680,11 +680,71 @@ a.btn, a.btn:hover, a.btn:visited, a.btn:active, a.btn span {
   box-shadow: 0 0 20px rgba(121, 40, 202, 0.4);
 }
 
-/* Voice Preset Grid */
+/* Voice Preset Grid & Showcase Collapsible Wrapper */
+.voices-showcase-wrapper {
+  position: relative;
+}
+
 .preset-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
+  position: relative;
+}
+
+.voices-grid-fade {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, rgba(7, 8, 13, 0) 0%, rgba(7, 8, 13, 0.95) 100%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.voices-expand-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.2rem;
+  position: relative;
+  z-index: 5;
+}
+
+.voices-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.95rem 2.2rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: rgba(19, 22, 36, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 210, 255, 0.4);
+  color: var(--text-primary);
+  border-radius: var(--radius-full);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 210, 255, 0.18);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+
+.voices-expand-btn:hover {
+  background: var(--grad-brand);
+  border-color: transparent;
+  box-shadow: var(--glow-brand);
+  transform: translateY(-3px);
+  color: #ffffff;
+}
+
+.voices-expand-btn:active {
+  transform: translateY(-1px);
+}
+
+.expand-btn-icon {
+  display: inline-flex;
+  transition: transform var(--transition-smooth);
 }
 
 .preset-card {
