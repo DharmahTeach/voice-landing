@@ -113,6 +113,54 @@
             }
           }
         ]
+      },
+      {
+        "@type": "ItemList",
+        "name": "База знаний и статьи о физике звука и обработке голоса",
+        "itemListElement": [
+          {
+            "@type": "Article",
+            "position": 1,
+            "name": "Анатомия тембра: почему мужской и женский голос отличаются формантами, а не просто высотой тона",
+            "headline": "Биомеханика речевого тракта, модель источник-фильтр и раздельный формантный сдвиг",
+            "url": "https://t.me/VoicePresetBot?start=article_anatomy-formants-voice-mechanics"
+          },
+          {
+            "@type": "Article",
+            "position": 2,
+            "name": "Алгоритм Praat PSOLA: как работает золотой стандарт мировой акустики для манипуляции речью",
+            "headline": "Математика временной области и фазовая синхронизация Pitch-Synchronous Overlap and Add",
+            "url": "https://t.me/VoicePresetBot?start=article_praat-psola-algorithm-acoustics"
+          },
+          {
+            "@type": "Article",
+            "position": 3,
+            "name": "Психоакустика восприятия: как мозг за 200 миллисекунд считывает пол, возраст и искренность по аудио",
+            "headline": "Шкала Барков, слуховые фильтры улитки уха и тембральные маркеры уверенности",
+            "url": "https://t.me/VoicePresetBot?start=article_psychoacoustics-voice-perception"
+          },
+          {
+            "@type": "Article",
+            "position": 4,
+            "name": "Студийный тракт в облаке: как связка DSP, параметрического EQ и OGG Opus создаёт чистый звук",
+            "headline": "Многокаскадный процессинг аудиосообщений на сервере для идеального звучания в Telegram",
+            "url": "https://t.me/VoicePresetBot?start=article_cloud-audio-dsp-ffmpeg-opus"
+          },
+          {
+            "@type": "Article",
+            "position": 5,
+            "name": "Голосовая приватность и биометрия: как защитить свой цифровой отпечаток в эпоху ИИ",
+            "headline": "Voiceprint, защита личной информации и анонимное голосовое общение без пересылки",
+            "url": "https://t.me/VoicePresetBot?start=article_voice-privacy-biometrics-security"
+          },
+          {
+            "@type": "Article",
+            "position": 6,
+            "name": "Классический DSP против нейросетей RVC: почему PSOLA выигрывает в скорости генерации",
+            "headline": "Инженерное сравнение: мгновенный отклик DSP против задержек тяжелых нейросетей на GPU",
+            "url": "https://t.me/VoicePresetBot?start=article_dsp-vs-rvc-speed-artifacts-comparison"
+          }
+        ]
       }
     ]
   }
@@ -157,6 +205,7 @@
           <li><a href="#technology" class="nav-link">Технология</a></li>
           <li><a href="#how-it-works" class="nav-link">Инструкция</a></li>
           <li><a href="#pricing" class="nav-link">Тарифы</a></li>
+          <li><a href="#articles" class="nav-link">Статьи</a></li>
           <li><a href="#safety" class="nav-link">⚖️ Правила</a></li>
           <li><a href="#faq" class="nav-link">FAQ</a></li>
           <li class="mobile-nav-cta">
@@ -1092,6 +1141,21 @@
     </div>
   </section>
 
+  <!-- Scientific & Educational Articles Section -->
+  <section id="articles" class="section articles-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag gradient-text-cyan">База знаний & Исследования</span>
+        <h2 class="section-title">Всё о физике звука, акустике и технологиях голоса</h2>
+        <p class="section-desc">Глубокие научно-популярные статьи о биомеханике речи, алгоритмах цифровой обработки (DSP) и голосовой приватности</p>
+      </div>
+
+      <div id="articlesGrid" class="articles-grid">
+        <!-- Rendered dynamically and crawlable by search engines -->
+      </div>
+    </div>
+  </section>
+
   <!-- Ecosystem Recommendation / Partner Bot Block -->
   <section class="partner-bot-section">
     <div class="container">
@@ -1153,6 +1217,7 @@
           <li><a href="#compare">Сравнение</a></li>
           <li><a href="#technology">Технология</a></li>
           <li><a href="#pricing">Тарифы</a></li>
+          <li><a href="#articles">Статьи</a></li>
           <li><a href="#safety">Правила & Закон</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="https://t.me/VoicePresetBot?start=landing" target="_blank" rel="noopener noreferrer">Telegram Бот</a></li>
@@ -1178,6 +1243,17 @@
     <a href="https://t.me/VoicePresetBot?start=landing" class="btn btn-primary sticky-mobile-cta-btn" target="_blank" rel="noopener noreferrer">
       <span>Запустить 🚀</span>
     </a>
+  </div>
+
+  <!-- Article Reader Modal Dialog -->
+  <div id="articleModal" class="article-modal" aria-hidden="true" role="dialog">
+    <div class="article-modal-backdrop"></div>
+    <div class="article-modal-container">
+      <button id="closeArticleModalBtn" class="article-modal-close" aria-label="Закрыть статью">✕</button>
+      <div id="articleModalBody" class="article-modal-body">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
   </div>
 
   <!-- Scripts -->

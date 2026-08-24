@@ -1566,6 +1566,401 @@ a.btn, a.btn:hover, a.btn:visited, a.btn:active, a.btn span {
 }
 
 /* ==========================================================================
+   Scientific & Educational Articles Section
+   ========================================================================== */
+.articles-section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.8rem;
+}
+
+.article-card {
+  background: var(--grad-dark-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.article-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--grad-brand);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.article-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 210, 255, 0.35);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 210, 255, 0.12);
+}
+
+.article-card:hover::before {
+  opacity: 1;
+}
+
+.article-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.article-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.article-read-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.article-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.article-card-desc {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.article-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.article-date {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.btn-read-article {
+  background: transparent;
+  border: none;
+  color: var(--neon-cyan);
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: gap var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-read-article:hover {
+  color: var(--text-primary);
+  gap: 0.65rem;
+}
+
+/* ==========================================================================
+   Article Reading Modal Box
+   ========================================================================== */
+body.modal-open {
+  overflow: hidden;
+}
+
+.article-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+}
+
+.article-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.article-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 5, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.article-modal-container {
+  position: relative;
+  background: #0d0f18;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  border-radius: var(--radius-lg);
+  max-width: 820px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), var(--glow-brand);
+  z-index: 10;
+  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@keyframes modalPopIn {
+  from {
+    transform: scale(0.94) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.article-modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  transition: all var(--transition-fast);
+}
+
+.article-modal-close:hover {
+  background: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.article-modal-body {
+  padding: 3rem 2.8rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-article-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-article-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.modal-article-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.modal-article-content {
+  font-size: 1.02rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-article-content .article-lead {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.modal-article-content h3 {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 1rem;
+  margin-bottom: -0.25rem;
+}
+
+.modal-article-content p {
+  color: #cbd5e1;
+}
+
+.modal-article-content code {
+  background: rgba(0, 210, 255, 0.1);
+  color: var(--neon-cyan);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+  border: 1px solid rgba(0, 210, 255, 0.2);
+}
+
+.modal-article-content ul,
+.modal-article-content ol {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  color: #cbd5e1;
+}
+
+.modal-article-content li strong {
+  color: var(--text-primary);
+}
+
+.article-quote-box {
+  background: linear-gradient(135deg, rgba(121, 40, 202, 0.15), rgba(0, 210, 255, 0.1));
+  border-left: 4px solid var(--neon-cyan);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
+  color: #f1f5f9;
+  margin: 0.5rem 0;
+}
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+.article-table th {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  color: var(--text-primary);
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.article-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+}
+
+.article-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.modal-article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.article-kw-tag {
+  font-size: 0.8rem;
+  color: var(--neon-cyan);
+  background: rgba(0, 210, 255, 0.06);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 210, 255, 0.15);
+}
+
+.modal-article-cta-box {
+  margin-top: 2rem;
+  background: linear-gradient(135deg, rgba(25, 30, 52, 0.9) 0%, rgba(13, 16, 28, 0.95) 100%);
+  border: 1px solid rgba(255, 0, 122, 0.35);
+  border-radius: var(--radius-md);
+  padding: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 0, 122, 0.15);
+}
+
+.modal-cta-text h4 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.modal-cta-text p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .article-modal {
+    padding: 0.75rem;
+  }
+
+  .article-modal-body {
+    padding: 2rem 1.4rem;
+  }
+
+  .modal-article-cta-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-article-cta-box .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
    Ecosystem Partner Block (Body Metrics)
    ========================================================================== */
 .partner-bot-section {
