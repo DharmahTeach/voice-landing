@@ -1164,11 +1164,11 @@ a.btn, a.btn:hover, a.btn:visited, a.btn:active, a.btn span {
    ========================================================================== */
 .pricing-grid {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 2.5rem;
-  max-width: 900px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1180px;
   margin: 0 auto;
-  align-items: center;
+  align-items: stretch;
 }
 
 .price-card {
