@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07080d">
+  <title>Алгоритм Praat PSOLA — Voice Changer</title>
+  <meta name="description" content="Математика временной области, фазовая синхронизация Pitch-Synchronous Overlap and Add и почему Амстердамский фонетический стандарт превосходит обычные">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://voice.dontseekme.ru/articles/praat-psola-algorithm-acoustics/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Voice Changer">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:url" content="https://voice.dontseekme.ru/articles/praat-psola-algorithm-acoustics/">
+  <meta property="og:title" content="Алгоритм Praat PSOLA — Voice Changer">
+  <meta property="og:description" content="Математика временной области, фазовая синхронизация Pitch-Synchronous Overlap and Add и почему Амстердамский фонетический стандарт превосходит обычные">
+  <meta property="og:image" content="https://voice.dontseekme.ru/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Алгоритм Praat PSOLA — Voice Changer">
+  <meta name="twitter:description" content="Математика временной области, фазовая синхронизация Pitch-Synchronous Overlap and Add и почему Амстердамский фонетический стандарт превосходит обычные">
+  <meta name="twitter:image" content="https://voice.dontseekme.ru/assets/og-image.jpg">
+  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Алгоритм Praat PSOLA: как работает золотой стандарт мировой акустики для манипуляции речью","description":"Математика временной области, фазовая синхронизация Pitch-Synchronous Overlap and Add и почему Амстердамский фонетический стандарт превосходит обычные вокодеры в чистоте звука.","datePublished":"2026-08-20","dateModified":"2026-08-20","inLanguage":"ru","mainEntityOfPage":"https://voice.dontseekme.ru/articles/praat-psola-algorithm-acoustics/","image":"https://voice.dontseekme.ru/assets/og-image.jpg","author":{"@type":"Organization","name":"Voice Changer","url":"https://voice.dontseekme.ru"},"publisher":{"@type":"Organization","name":"Voice Changer","url":"https://voice.dontseekme.ru"}}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="/" class="logo-brand" title="Изменение Голоса — на главную">
+        <img src="/assets/logo.webp" alt="Логотип Изменение Голоса Voice Changer" class="logo-img" width="48" height="48">
+        <div class="logo-text-group">
+          <span class="brand-title gradient-text">ИЗМЕНЕНИЕ ГОЛОСА</span>
+          <span class="brand-subtitle">VOICE CHANGER AI</span>
+        </div>
+      </a>
+      <a href="https://t.me/VoicePresetBot?start=landing" class="btn btn-primary header-cta-btn" target="_blank" rel="noopener noreferrer">Запустить бота</a>
+    </div>
+  </header>
+  
+  <main class="legal-page article-page">
+    <div class="container">
+      <p class="legal-lead">Алгоритмы &amp; DSP · 7 мин чтения · 20 августа 2026</p>
+      <h1>Алгоритм Praat PSOLA: как работает золотой стандарт мировой акустики для манипуляции речью</h1>
+      <p class="article-lead">Математика временной области, фазовая синхронизация Pitch-Synchronous Overlap and Add и почему Амстердамский фонетический стандарт превосходит обычные вокодеры в чистоте звука.</p>
+      <div class="modal-article-content">
+      <p class="article-lead">
+        Среди сотен алгоритмов цифровой обработки сигналов (DSP) существует метод, который уже более 30 лет остаётся эталоном в академических лабораториях фонетики по всему миру — от Массачусетского технологического института до СПбГУ. Это алгоритм <strong>PSOLA</strong> (Pitch-Synchronous Overlap and Add), реализованный в знаменитом научном комплексе <em>Praat</em> профессорами Полом Бурсмой и Дэвидом Веенинком в Амстердамском университете.
+      </p>
+
+      <h3>В чём проблема классического изменения высоты тона?</h3>
+      <p>
+        Большинство потребительских плагинов используют фазовый вокодер (Phase Vocoder) в частотной области через быстрое преобразование Фурье (FFT). У этого подхода есть критический недостаток — <em>размытие фаз (Phase Smearing)</em>. Речь теряет резкость согласных звуков (транзиентов), появляется металлический призвук «робота в трубе» и ощущение реверберации в жестяной банке.
+      </p>
+
+      <h3>Принцип работы PSOLA: ювелирная нарезка периодов</h3>
+      <p>
+        В отличие от частотных методов, <code>praat psola алгоритм</code> работает напрямую во <strong>временной области (Time Domain)</strong> с высочайшей точностью:
+      </p>
+      <ol>
+        <li><strong>Детекция меток основного тона (Pitch Marks):</strong> Алгоритм с микросекундной точностью находит моменты смыкания голосовых связок (Glottal Closure Instants) в каждом периоде колебания.</li>
+        <li><strong>Оконное сегментирование:</strong> Вокруг каждого пика вырезается короткий фрагмент звуковой волны с использованием симметричного окна Ханна (Hanning Window) двойной длины периода.</li>
+        <li><strong>Ресинтез с новым интервалом (Overlap & Add):</strong> При смене высоты тона вырезанные окна накладываются друг на друга с новыми, более частыми интервалами (для повышения тона) или более редкими (для баса), сохраняя исходную форму акустического импульса.</li>
+      </ol>
+
+      <div class="article-quote-box">
+        <p>«Поскольку форма импульса внутри окна остаётся неизменной, естественные резонансы формант не размываются, а перекрытие по синусоидальному закону гарантирует 100% отсутствие щелчков и фазовых выпадений.»</p>
+      </div>
+
+      <h3>Почему наш Telegram-бот использует PSOLA в бэкенде</h3>
+      <p>
+        Когда вам нужно качественное <code>преобразование голоса в телеграмме</code> за доли секунды, чистый математический алгоритм Praat PSOLA на C++/Python обеспечивает:
+      </p>
+      <ul>
+        <li>Мгновенный рендеринг: обработка 10-секундного голосового сообщения занимает всего <strong>0.3–0.6 секунды</strong> на стандартном сервере.</li>
+        <li>Нулевой уровень фазовых артефактов и металлического дребезга.</li>
+        <li>Идеальную артикуляцию шипящих и взрывных звуков («п», «т», «к», «с», «ш»).</li>
+      </ul>
+      <p>
+        Это делает наш <code>voice changer telegram бот</code> профессиональным решением студийного качества, доступным прямо в телефоне для пользователей из любого региона — от СПб до Владивостока.
+      </p>
+    </div>
+      <p><a class="btn btn-primary" href="https://t.me/VoicePresetBot?start=article_praat-psola-algorithm-acoustics" target="_blank" rel="noopener noreferrer">Попробовать в @VoicePresetBot</a></p>
+      <h2>Ещё статьи</h2>
+      <div class="related">
+        <a href="/articles/anatomy-formants-voice-mechanics/">Анатомия тембра: почему мужской и женский голос отличаются формантами, а не просто высотой тона</a>
+        <a href="/articles/psychoacoustics-voice-perception/">Психоакустика восприятия: как мозг за 200 миллисекунд считывает пол, возраст и искренность по аудио</a>
+        <a href="/articles/cloud-audio-dsp-ffmpeg-opus/">Студийный тракт в облаке: как связка DSP, параметрического EQ и OGG Opus создаёт чистый звук</a>
+      </div>
+      <p><a href="/#articles">← Все статьи</a></p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Изменение Голоса | Voice Changer Bot</p>
+        <p>
+          <a href="/privacy.html">Конфиденциальность</a> ·
+          <a href="/terms.html">Условия</a> ·
+          <a href="https://t.me/VoicePresetBot?start=landing" target="_blank" rel="noopener noreferrer">@VoicePresetBot</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

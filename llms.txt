@@ -1,0 +1,19 @@
+# Voice Changer (@VoicePresetBot)
+
+Telegram-бот для изменения голоса: 18 пресетов, Praat PSOLA, отправка без цитирования.
+
+- Старт: 5 бесплатных генераций
+- Пакеты: +20 за 49 ₽, +100 за 199 ₽, безлимит 30 дней за 499 ₽
+- Оплата: СБП, карты МИР, ЮMoney через ЮKassa
+- Бот: https://t.me/VoicePresetBot?start=landing
+
+## Страницы
+- Главная: https://voice.dontseekme.ru/
+- Конфиденциальность: https://voice.dontseekme.ru/privacy.html
+- Условия: https://voice.dontseekme.ru/terms.html
+- Анатомия тембра: почему мужской и женский голос отличаются формантами, а не просто высотой тона: https://voice.dontseekme.ru/articles/anatomy-formants-voice-mechanics/
+- Алгоритм Praat PSOLA: как работает золотой стандарт мировой акустики для манипуляции речью: https://voice.dontseekme.ru/articles/praat-psola-algorithm-acoustics/
+- Психоакустика восприятия: как мозг за 200 миллисекунд считывает пол, возраст и искренность по аудио: https://voice.dontseekme.ru/articles/psychoacoustics-voice-perception/
+- Студийный тракт в облаке: как связка DSP, параметрического EQ и OGG Opus создаёт чистый звук: https://voice.dontseekme.ru/articles/cloud-audio-dsp-ffmpeg-opus/
+- Голосовая приватность и биометрия: как защитить свой цифровой отпечаток в эпоху ИИ: https://voice.dontseekme.ru/articles/voice-privacy-biometrics-security/
+- Классический DSP против нейросетей RVC: почему PSOLA выигрывает в скорости генерации: https://voice.dontseekme.ru/articles/dsp-vs-rvc-speed-artifacts-comparison/
