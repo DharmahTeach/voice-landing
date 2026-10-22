@@ -78,6 +78,7 @@ function chrome({ title, description, canonical, type = 'website', jsonLd, body 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  <script src="/consent.js" defer></script>
   ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
 </head>
 <body>
@@ -100,6 +101,7 @@ function chrome({ title, description, canonical, type = 'website', jsonLd, body 
         <p>© 2026 Изменение Голоса | Voice Changer Bot</p>
         <p>
           <a href="/privacy.html">Конфиденциальность</a> ·
+          <a href="/cookies.html">Политика cookies</a> ·
           <a href="/terms.html">Условия</a> ·
           <a href="${bot}" target="_blank" rel="noopener noreferrer">@VoicePresetBot</a>
         </p>
@@ -165,6 +167,7 @@ const urls = [
     changefreq: 'monthly',
     priority: '0.7',
   })),
+  { loc: `${origin}/cookies.html`, lastmod: '2026-10-22', changefreq: 'yearly', priority: '0.3' },
   { loc: `${origin}/privacy.html`, lastmod: today, changefreq: 'yearly', priority: '0.3' },
   { loc: `${origin}/terms.html`, lastmod: today, changefreq: 'yearly', priority: '0.3' },
 ];

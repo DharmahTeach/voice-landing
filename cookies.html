@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Политика cookies — Voice Changer</title>
+  <meta name="description" content="Какие cookie ставит Яндекс.Метрика на voice.dontseekme.ru и как отозвать согласие.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://voice.dontseekme.ru/cookies.html">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <script src="/consent.js" defer></script>
+  <style>
+    .cookie-actions { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 20px; }
+    .cookie-actions button { font:600 14px/1 Inter,system-ui,sans-serif; border-radius:10px; padding:12px 16px; cursor:pointer; border:1px solid #c7d2fe; background:#fff; color:#3730a3; }
+    .cookie-actions .ok { background:#facc15; border-color:#facc15; color:#1e1b4b; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="/" class="logo-brand" title="Изменение Голоса — на главную">
+        <img src="assets/logo.webp" alt="Логотип Изменение Голоса Voice Changer" class="logo-img" width="48" height="48">
+        <span class="brand-title gradient-text">ИЗМЕНЕНИЕ ГОЛОСА</span>
+      </a>
+    </div>
+  </header>
+  <main class="legal-page">
+    <div class="container">
+      <h1>Политика cookies</h1>
+      <p class="legal-lead">Обновлено: 22 октября 2026.</p>
+      <p id="cookie-status">Проверяем ваш выбор…</p>
+      <div class="cookie-actions">
+        <button type="button" class="ok" data-cookie-choice="granted">Разрешить аналитику</button>
+        <button type="button" data-cookie-choice="denied">Отключить аналитику</button>
+      </div>
+      <h2>Когда ставятся cookie</h2>
+      <p>До нажатия «Принять» Яндекс.Метрика не загружается. Выбор хранится в localStorage под ключом <code>vc_cookie_consent</code>.</p>
+      <h2>Счётчик</h2>
+      <p>Яндекс.Метрика 111901738: визиты, клики и вебвизор. Cookie: _ym_uid, _ym_d, _ym_isad, _ym_visorc. Рекламных сетей на сайте нет.</p>
+      <h2>Как отключить</h2>
+      <p>Кнопка «Отключить аналитику» снимает согласие и удаляет cookie счётчика. Баннер вернётся, если очистить данные сайта в браузере.</p>
+      <p><a href="/privacy.html">Политика конфиденциальности</a> · <a href="/">← На главную</a></p>
+    </div>
+  </main>
+</body>
+</html>

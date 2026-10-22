@@ -173,19 +173,7 @@
   }
   </script>
 
-  <!-- Yandex.Metrika counter -->
-  <script type="text/javascript">
-      (function(m,e,t,r,i,k,a){
-          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-          m[i].l=1*new Date();
-          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111901738', 'ym');
-
-      ym(111901738, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/111901738" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
+  <script src="/consent.js" defer></script>
 </head>
 <body>
 
@@ -212,6 +200,7 @@
           <li><a href="#technology" class="nav-link">Технология</a></li>
           <li><a href="#how-it-works" class="nav-link">Инструкция</a></li>
           <li><a href="#pricing" class="nav-link">Тарифы</a></li>
+          <li><a href="#referral" class="nav-link">🎁 Рефералка</a></li>
           <li><a href="#articles" class="nav-link">Статьи</a></li>
           <li><a href="#safety" class="nav-link">⚖️ Правила</a></li>
           <li><a href="#faq" class="nav-link">FAQ</a></li>
@@ -975,6 +964,113 @@
         </div>
 
       </div>
+
+      <!-- Referral Promo Banner under Tariffs -->
+      <div class="referral-tariff-banner">
+        <div class="banner-icon-col">🎁</div>
+        <div class="banner-text-col">
+          <div class="banner-title">Не хочешь тратить деньги? Получай генерации бесплатно!</div>
+          <div class="banner-desc">
+            Приглашай друзей в бота — дарим по <strong>+5 бонусных голосовых</strong> за каждого друга тебе и ему без ограничений по времени!
+          </div>
+        </div>
+        <div class="banner-btn-col">
+          <a href="#referral" class="btn btn-outline btn-sm">
+            <span>Как позвать друзей →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       REFERRAL PROGRAM SECTION & INTERACTIVE CALCULATOR
+       ========================================================================== -->
+  <section id="referral" class="section" style="background: rgba(10, 12, 22, 0.7); border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag gradient-text-cyan">Вирусная программа 5+5</span>
+        <h2 class="section-title">Приглашай друзей — меняйте голоса бесплатно!</h2>
+        <p class="section-desc">
+          Win-Win для тебя и друзей. За каждого друга, запустившего бота по твоей ссылке, ты получаешь <strong>+5 генераций</strong>, а твой друг — <strong>+5 бонусных генераций</strong> в подарок на старте!
+        </p>
+      </div>
+
+      <!-- 3 Viral Steps -->
+      <div class="referral-steps-grid">
+        <div class="referral-step-card">
+          <div class="step-num-badge">01</div>
+          <div class="step-icon">🔗</div>
+          <h3 class="step-title">Забери ссылку в боте</h3>
+          <p class="step-desc">
+            Открой бота, нажми <strong>«👥 Рефералка (+5)»</strong> или отправь команду <code>/ref</code> — твоя персональная ссылка сгенерируется мгновенно в 1 клик.
+          </p>
+        </div>
+
+        <div class="referral-step-card highlight">
+          <div class="step-num-badge">02</div>
+          <div class="step-icon">💬</div>
+          <h3 class="step-title">Скинь друзьям или в чаты</h3>
+          <p class="step-desc">
+            Отправь ссылку друзьям или закинь в чат с компанией. Друг нажимает Start и сразу получает 10 генераций (5 базовых + 5 от тебя).
+          </p>
+        </div>
+
+        <div class="referral-step-card">
+          <div class="step-num-badge">03</div>
+          <div class="step-icon">⚡</div>
+          <h3 class="step-title">Получай +5 генераций</h3>
+          <p class="step-desc">
+            Бонус начисляется моментально с мгновенным push-уведомлением в Telegram. 10 друзей = 50 голосовых бесплатно без ограничений по времени!
+          </p>
+        </div>
+      </div>
+
+      <!-- Gamified Referral Calculator -->
+      <div class="ref-calc-box">
+        <div class="ref-calc-controls">
+          <div class="calc-label-row">
+            <span style="font-weight: 700; font-size: 1.05rem;">Сколько друзей и знакомых позовёшь?</span>
+            <span class="calc-value-badge" id="refFriendsBadge">5 друзей</span>
+          </div>
+          <input type="range" min="1" max="30" value="5" class="calc-slider" id="refFriendsSlider" aria-label="Количество друзей">
+
+          <div class="ref-perks-list">
+            <div class="ref-perk-item">
+              <span class="icon">⚡</span>
+              <span>Мгновенное начисление на баланс сразу после первого входа друга</span>
+            </div>
+            <div class="ref-perk-item">
+              <span class="icon">♾️</span>
+              <span>Накопленные голосовые сообщения никогда не сгорают и действуют бессрочно</span>
+            </div>
+            <div class="ref-perk-item">
+              <span class="icon">🎙️</span>
+              <span>Работает для всех 18 голосов и эффектов (Алиса, Ева, Артём, Бурундук и др.)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ref-calc-results">
+          <div class="ref-res-solutions" id="refResGenerations">+25</div>
+          <div class="ref-res-sub">бесплатных голосовых трансформаций</div>
+
+          <div class="ref-stats-mini">
+            <div class="ref-mini-box">
+              <div class="ref-mini-val" id="refResMoney">~60 ₽</div>
+              <div class="ref-mini-lbl">Чистая экономия</div>
+            </div>
+            <div class="ref-mini-box">
+              <div class="ref-mini-val" id="refResFriends">5 человек</div>
+              <div class="ref-mini-lbl">В твоей команде</div>
+            </div>
+          </div>
+
+          <a href="https://t.me/VoicePresetBot?start=landing" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%;">
+            <span>🎁 Забрать реферальную ссылку в Telegram</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1198,6 +1294,16 @@
               Вам доступны гибкие варианты: <strong>5 бесплатных генераций на старте</strong>, разовые пакеты <strong>«+20 генераций» за 49 ₽</strong> и <strong>«+100 генераций» за 199 ₽ (⭐ выгодно)</strong> без подписки (сообщения не сгорают со временем), а также <strong>«Безлимитный PRO» за 499 ₽ / месяц</strong> (полный безлимит на 30 дней). Оплата проходит официально через ЮKassa: СБП (в 1 клик через приложение любого банка), карты МИР, Visa, Mastercard и ЮMoney. Баланс или безлимит активируются мгновенно!
             </div>
           </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Как работает реферальная программа и как получить бесплатные генерации?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              В боте действует вирусная программа <strong>«5+5»</strong>. Нажмите в меню бота кнопку <strong>«👥 Рефералка (+5)»</strong> или отправьте команду <code>/ref</code> — бот пришлет вашу персональную ссылку. Когда друг запустит бота по вашей ссылке, он получит <strong>+5 бонусных сообщений</strong> (итого 10 генераций на старте), а вам мгновенно начислится <strong>+5 бесплатных генераций</strong> с уведомлением в Telegram! Лимитов на количество приглашений нет, а полученные генерации никогда не сгорают.
+            </div>
+          </div>
         </div>
 
       </div>
@@ -1337,6 +1443,7 @@
           <li><a href="#safety">Правила & Закон</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="/privacy.html">Конфиденциальность</a></li>
+          <li><a href="/cookies.html">Политика cookies</a></li>
           <li><a href="/terms.html">Условия</a></li>
           <li><a href="https://t.me/VoicePresetBot?start=landing" target="_blank" rel="noopener noreferrer">Telegram Бот</a></li>
         </ul>
